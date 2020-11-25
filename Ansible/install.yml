@@ -1,0 +1,30 @@
+
+- name: Installing docker on your server
+  #sudo 
+  become: true
+  hosts: "*"
+  tasks:
+    # Installeren van aptitude (apt alternative) 
+    - name: Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+    #Packages installeren
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+    #docker GPG apt key toevoegen
+    - name: Adding docker key 
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    #adding key
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+    #install docker
+    - name: Update apt and install docker-ce
+      apt: update_cache=yes name=docker-ce state=latest
+    #install docker pip package (ansible heeft dit nodig)
+    - name: Install Docker Module for Python
+      pip:
+        name: docker  
