@@ -1,0 +1,16 @@
+#This is used for updating the docker compose on the remote server
+#Docker must allready be running to execute this script
+- name: Redeploying containers
+  hosts: "*"
+  become: true
+  gather_facts: no
+  tasks:      
+      - name: stop running services
+        shell:  docker-compose kill
+        args:
+          chdir: /home/ubuntu/Docker
+
+      - name: stop running services
+        shell:  docker-compose down
+        args:
+          chdir: /home/ubuntu/Docker
