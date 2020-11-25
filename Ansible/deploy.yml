@@ -1,0 +1,20 @@
+#This is used for deployin docker compose on the remote server
+- name: Redeploying containers
+  hosts: "*"
+  become: true
+  gather_facts: no
+  tasks:      
+      - name: Kopieer bestanden naar machine
+        copy:
+          src: ../Docker
+          dest: "/home/ubuntu"
+
+      - name: Build services
+        shell:  docker-compose build
+        args:
+          chdir: /home/ubuntu/Docker
+
+      - name: remove docker compose
+        shell:  docker-compose up -d
+        args:
+          chdir: /home/ubuntu/Docker      
