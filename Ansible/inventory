@@ -1,1 +1,1 @@
-docker ansible_host=3.121.202.185 ansible_port=22 ansible_user=ubuntu
+docker ansible_host=3.123.2.6  ansible_port=22 ansible_user=ubuntu
